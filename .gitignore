@@ -1,6 +1,5 @@
 train/*.proc
-train/*.env
 train/*.zip
 test/*.proc
-test/*.env
 test/*.zip
+..idea/*

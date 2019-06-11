@@ -3,6 +3,7 @@ from numpy import sqrt, arctan2, pi
 import os
 from pickle import dump, load
 
+
 getFiles = lambda dir, ext='': [os.path.join(dir, f) for f in os.listdir(dir) if f.endswith(ext)]
 
 def compute(f, funct):

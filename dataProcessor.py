@@ -4,6 +4,7 @@ class Ext:
     objectProjections = '.proj'
     environment       = '.env'
     processedData     = '.proc'
+    widths            = '.widths'
 
 
 environmentError = 0.05

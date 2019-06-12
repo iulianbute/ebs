@@ -97,7 +97,7 @@ def processScene(fl, data, scene, reses):
     res = {}
     for cluster in clusters:
         #print(cluster)
-        m = getMean(cluster)
+        m = getMean(cluster)[0]
         obj = closestObject(m, data)
         if obj not in res:
             res[obj] = 0

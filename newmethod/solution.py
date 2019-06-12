@@ -5,6 +5,7 @@ import math
 import os
 from sklearn.cluster import DBSCAN
 from threading import Thread
+import time
 
 def rpt():
     return random.random() * 100 - 200
@@ -61,27 +62,36 @@ def removeNoise(pts, var, std, centroid):
 
 
 def trainOne(which):
-    fl = P.loadFile(which)
-    means = []
-    smeans = 0
-    for scene in range(50):
-        pts = P.loadScene(fl, scene)
-        res, std, centroid = getMean(pts)
-        pts = removeNoise(pts, res, std, centroid)
-        res, _, _ = getMean(pts)
-        smeans += res
-        means.append(res)
-    smeans /= 50
-    return smeans
+  initial_load_file = time.time()
+  fl = P.loadFile(which)
+  final_load_file = time.time()
+  load_file_time = final_load_file - initial_load_file
+  means = []
+  smeans = 0
+  load_scenes_sum = 0
+  for scene in range(50):
+    initial_load_scene = time.time()
+    pts = P.loadScene(fl, scene)
+    final_load_scene = time.time()
+    load_scenes_sum += final_load_scene - initial_load_scene
+    res, std, centroid = getMean(pts)
+    pts = removeNoise(pts, res, std, centroid)
+    res, _, _ = getMean(pts)
+    smeans += res
+    means.append(res)
+  smeans /= 50
+  print('Total reading time: {}'.format(load_file_time + load_scenes_sum))
+  return smeans, 50 / (load_file_time + load_scenes_sum)
 
 def trainAll():
-    res = {}
-    for d in os.listdir(sys.argv[1]):
-        print('Training', d)
-        s = trainOne(os.path.join(sys.argv[1], d, 'in.csv'))
-        print('Done with result', s)
-        res[d] = s
-    open(sys.argv[2], 'w').write('{0}'.format(res))
+  res = {}
+  for d in os.listdir(sys.argv[1]):
+    print('Training', d)
+    s, time = trainOne(os.path.join(sys.argv[1], d, 'in.csv'))
+    print("Reading tuples / second: {}".format(time))
+    print('Done with result', s)
+    res[d] = s
+  open(sys.argv[2], 'w').write('{0}'.format(res))
 
 def closestObject(m, data):
     best = (500000000.0, '')
@@ -90,34 +100,51 @@ def closestObject(m, data):
             best = (abs(m - data[key]), key)
     return best[1]
 
-def processScene(fl, data, scene, reses):
-    pts = P.loadScene(fl, scene)
-    clusters = clusterize(pts)
-    #print('For scene {0} I have {1} clusters'.format(scene, len(clusters)))
-    res = {}
-    for cluster in clusters:
-        #print(cluster)
-        m = getMean(cluster)[0]
-        obj = closestObject(m, data)
-        if obj not in res:
-            res[obj] = 0
-        res[obj] += 1
-    reses[scene] = res
+
+def processScene(fl, data, scene, reses, global_latency, load_time):
+  load_scene_time = time.time() 
+  pts = P.loadScene(fl, scene)
+  load_scene_time = time.time() - load_scene_time
+  clusters = clusterize(pts)
+  #print('For scene {0} I have {1} clusters'.format(scene, len(clusters)))
+  initial_time = time.time()
+  res = {}
+  for cluster in clusters:
+    #print(cluster)
+    m = getMean(cluster)
+    obj = closestObject(m, data)
+    if obj not in res:
+      res[obj] = 0
+    res[obj] += 1
+  reses[scene] = res
+  latency = time.time() - initial_time
+  global_latency[scene] = latency
+  load_time[scene] = load_scene_time
 
 def runInstance(which, data):
-    fl = P.loadFile(which)
-    nr = 100
-    L = [None] * nr
-    threads = []
-    for scene in range(nr):
-        process = Thread(target=processScene, args=[fl, data, scene, L])
-        threads.append(process)
-        process.start()
-        #res = processScene(fl, data, scene, L)
-        #break
-    for process in threads:
-        process.join()
-    return L
+  time_loading_data_file = time.time()
+  fl = P.loadFile(which)
+  time_loading_data_file = time.time() - time_loading_data_file
+  nr = 100
+  L = [None] * nr
+  threads = []
+  global_latency = [None] * nr
+  load_scene_time = [None] * nr
+  initial_time = time.time()
+  for scene in range(nr):
+    process = Thread(target=processScene, args=[fl, data, scene, L, global_latency, load_scene_time])
+    threads.append(process)
+    process.start()
+    #res = processScene(fl, data, scene, L)
+    #break
+  for process in threads:
+    process.join()
+  finish_time = time.time()
+  #total_loading_data_time = time_loading_data_file + sum(load_scene_time)
+  total_loading_data_time = sum(load_scene_time)
+  print(load_scene_time)
+  return L, round(sum(global_latency) / nr, 2), round(nr / sum(global_latency), 2), round(nr / total_loading_data_time, 2)
+
 
 def formatOutput(res):
     s = []
@@ -126,12 +153,17 @@ def formatOutput(res):
         s.append('{0}'.format(res[key]))
     return ','.join(s)
 
-def main():
-    data = eval(open(sys.argv[1]).read())
-    L = runInstance(sys.argv[2], data)
-    for i in range(len(L)):
-        s = '{0},{1}'.format(i, formatOutput(L[i]))
-        print(s)
+
+def main(result_file_name="result"):
+  data = eval(open(sys.argv[1]).read())
+  L, latency, throughput, loading_time = runInstance(sys.argv[2], data)
+  result_file = open(result_file_name, "w")
+  for i in range(len(L)):
+    s = '{0},{1}'.format(i, formatOutput(L[i]))
+    result_file.write(s)
+  print("Reading tuples / second: {} | Solution latency: {} | Solution throughput: {}".format(loading_time, latency, throughput))
+  result_file.close()
 
 if __name__ == '__main__':
-    main()
+  main()
+  #trainAll()

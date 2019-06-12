@@ -4,10 +4,7 @@ import sys
 import math
 import os
 from sklearn.cluster import DBSCAN
-
-NR_ITER = 15
-MAX_OBJ = 20
-TRIES = 30
+from threading import Thread
 
 def rpt():
   return random.random() * 100 - 200
@@ -80,23 +77,33 @@ def closestObject(m, data):
       best = (abs(m - data[key]), key)
   return best[1]
 
+def processScene(fl, data, scene, reses):
+  pts = P.loadScene(fl, scene)
+  clusters = clusterize(pts)
+  #print('For scene {0} I have {1} clusters'.format(scene, len(clusters)))
+  res = {}
+  for cluster in clusters:
+    #print(cluster)
+    m = getMean(cluster)
+    obj = closestObject(m, data)
+    if obj not in res:
+      res[obj] = 0
+    res[obj] += 1
+  reses[scene] = res
+
 def runInstance(which, data):
   fl = P.loadFile(which)
-  L = []
-  for scene in range(50):
-    pts = P.loadScene(fl, scene)
-    clusters = clusterize(pts)
-    #print('For scene {0} I have {1} clusters'.format(scene, len(clusters)))
-    res = {}
-    for cluster in clusters:
-      #print(cluster)
-      m = getMean(cluster)
-      obj = closestObject(m, data)
-      if obj not in res:
-        res[obj] = 0
-      res[obj] += 1
-    L.append(res)
+  nr = 100
+  L = [None] * nr
+  threads = []
+  for scene in range(nr):
+    process = Thread(target=processScene, args=[fl, data, scene, L])
+    threads.append(process)
+    process.start()
+    #res = processScene(fl, data, scene, L)
     #break
+  for process in threads:
+    process.join()
   return L
 
 def formatOutput(res):

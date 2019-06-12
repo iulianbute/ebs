@@ -111,7 +111,7 @@ def processScene(fl, data, scene, reses, global_latency, load_time):
   res = {}
   for cluster in clusters:
     #print(cluster)
-    m = getMean(cluster)
+    m = getMean(cluster)[0]
     obj = closestObject(m, data)
     if obj not in res:
       res[obj] = 0
@@ -161,9 +161,13 @@ def main(result_file_name="result"):
   for i in range(len(L)):
     s = '{0},{1}'.format(i, formatOutput(L[i]))
     result_file.write(s)
+    result_file.write('\n')
   print("Reading tuples / second: {} | Solution latency: {} | Solution throughput: {}".format(loading_time, latency, throughput))
   result_file.close()
 
 if __name__ == '__main__':
-  main()
+  if len(sys.argv) > 3 and sys.argv[3] == '--train':
+    trainAll()
+  else:
+    main()
   #trainAll()

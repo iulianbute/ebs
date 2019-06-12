@@ -26,6 +26,10 @@ def validate_solution(outputResult, expectedResult):
     
     errors = {}
     
+    general_accuracy = 0
+    general_precision = 0
+    general_recall = 0
+    
     for i in range(0, len(output_result)):
         ioutput = output_result[i]
         iexpected = expected_result[i]
@@ -52,23 +56,49 @@ def validate_solution(outputResult, expectedResult):
             else:
                 true_negative += 1
 
+        accuracy = (true_positive + true_negative) / (true_positive + true_negative + false_negative + false_positive)
+
+        precision = true_positive / (true_positive + false_positive)
+        recall = true_positive / (true_positive + false_negative)
+
+        false_negative_procent = 0
+
         if false_negative != 0:
-            false_negative = false_negative / len(iexpected)
+            false_negative_procent = round(false_negative / len(iexpected), 2)
             #print(false_negative, len(iexpected))
         
+        false_positive_procent = 0
+        
         if false_positive != 0:
-            false_positive = false_positive / len(ioutput)
+            false_positive_procent = round(false_positive / len(ioutput),  2)
             #print(false_positive, len(ioutput))
         
-        accuracy = (true_positive + true_negative) / (true_positive + true_negative + false_negative + false_positive)
+        
         
         #if incorrect_number_of_objects:
             #print(false_negative, false_positive)
             
-        errors[i] = {'fp':false_positive, 'fn': false_negative, 'diff_objects':incorrect_number_of_objects, 'acc':accuracy}
+            
+        general_accuracy += accuracy
+        general_precision += precision
+        general_recall += recall
+        
+        errors[i] = {'fp_count':false_positive, 'fp':false_positive_procent, 'fn_count': false_negative, 'fn': false_negative_procent,'diff_objects':incorrect_number_of_objects, 'acc':accuracy, 'precision':precision, 'recall':recall}
     
-    handler = open("resultFile", "w")
+    general_accuracy /= len(output_result)
+    general_precision /= len(output_result)
+    general_recall /= len(output_result)
+    
+    general_accuracy = round(general_accuracy, 2)
+    general_precision = round(general_precision, 2)
+    general_recall = round(general_recall, 2)
+    
+    print("Accuracy: {} Precision: {} Recall: {}".format(general_accuracy, general_precision, general_recall))
+    
+    errors["general_values"] = {'general_accuracy':general_accuracy, 'general_precision': general_precision, 'general_recall':general_recall}
+    
+    handler = open("detailed_resultFile", "w")
     json.dump(errors, handler, indent=4)
     handler.close()
 
-validate_solution(sys.argv[1], sys.argv[2])
+validate_solution(sys.argv[1], sys.argv[2])    

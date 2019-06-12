@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9974a622-04e3-4976-848b-26e1588b0af8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ebs.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dataUtil.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Atm.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Bench.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/BigSassafras.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/BmwX5Simple.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/ClothRecyclingContainer.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Cypress.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/DrinkingFountain.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/ElectricalCabinet.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/EmergencyPhone.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/FireHydrant.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/GlassRecyclingContainer.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/IceFreezerContainer.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Mailbox.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/MetallicTrash.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/MotorbikeSimple.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Oak.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/OldBench.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Pedestrian.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/PhoneBooth.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/PublicBin.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Sassafras.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/ScooterSimple.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/ToyotaPriusSimple.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/Tractor.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/TrashBin.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/TrashContainer.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/UndergroundContainer.proj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/train/WorkTrashContainer.proj" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataProcessor.py" afterPath="$PROJECT_DIR$/dataProcessor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataReader.py" afterPath="$PROJECT_DIR$/dataReader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learner.py" afterPath="$PROJECT_DIR$/learner.py" />
-    </list>
+    <list default="true" id="9974a622-04e3-4976-848b-26e1588b0af8" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -120,7 +82,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -231,7 +193,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -267,7 +229,7 @@
         <state relative-caret-position="221">
           <caret line="13" column="28" lean-forward="false" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#0#20#0" expanded="false" />
           </folding>
         </state>
       </provider>

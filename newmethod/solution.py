@@ -74,6 +74,8 @@ def trainOne(which):
     pts = P.loadScene(fl, scene)
     final_load_scene = time.time()
     load_scenes_sum += final_load_scene - initial_load_scene
+    if len(pts) == 0:
+      break
     res, std, centroid = getMean(pts)
     pts = removeNoise(pts, res, std, centroid)
     res, _, _ = getMean(pts)
@@ -105,6 +107,8 @@ def processScene(fl, data, scene, reses, global_latency, load_time):
   load_scene_time = time.time() 
   pts = P.loadScene(fl, scene)
   load_scene_time = time.time() - load_scene_time
+  if len(pts) == 0:
+    return
   clusters = clusterize(pts)
   #print('For scene {0} I have {1} clusters'.format(scene, len(clusters)))
   initial_time = time.time()
@@ -128,8 +132,8 @@ def runInstance(which, data):
   nr = 100
   L = [None] * nr
   threads = []
-  global_latency = [None] * nr
-  load_scene_time = [None] * nr
+  global_latency = [0] * nr
+  load_scene_time = [0] * nr
   initial_time = time.time()
   for scene in range(nr):
     process = Thread(target=processScene, args=[fl, data, scene, L, global_latency, load_scene_time])
@@ -159,6 +163,8 @@ def main(result_file_name="result"):
   L, latency, throughput, loading_time = runInstance(sys.argv[2], data)
   result_file = open(result_file_name, "w")
   for i in range(len(L)):
+    if L[i] is None:
+      continue
     s = '{0},{1}'.format(i, formatOutput(L[i]))
     result_file.write(s)
     result_file.write('\n')
